@@ -31,7 +31,7 @@ stack-exists \
 # deploys cloud9
 aws cloudformation deploy \
   --template-file "${FILE_DIRECTORY}/cloudFormation/02-cloud9.yml" \
-  --stack-name "${STACK_NAME}-svr" \
+  --stack-name "${STACK_NAME}" \
   --capabilities CAPABILITY_IAM \
   --tags "${TAGS[@]}" \
   --no-fail-on-empty-changeset \
@@ -39,4 +39,6 @@ aws cloudformation deploy \
   --parameter-overrides \
       stackName="${STACK_NAME}" \
       myIpAddress="${myIpAddress}" \
-      envName="${RANDOM_NUM}"
+      envName="${RANDOM_NUM}" \
+      User="jujharsingh@economist.com" \
+      ownerArn="arn:aws:iam::975608782524:user/jujharsingh@economist.com"
