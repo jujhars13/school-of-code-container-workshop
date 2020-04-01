@@ -1,0 +1,44 @@
+Description: Cloud9 environments
+
+Parameters:
+  # used to open up ssh port
+  myIpAddress:
+    Type: String
+  stackName:
+    Type: String
+  instanceType:
+    Type: String
+    Default: t3.medium
+  User:
+    Description:    Please specify the User.
+    Type:           String
+    Default:        "test"
+  Env:
+    Description:    Please specify the target Env. Used for tagging and resource names. Mandatory LOWER CASE.
+    Type:           String
+    Default:        "dev"
+    AllowedValues:
+      - poc
+      - dev
+      - prod
+      
+Resources:
+  C9IDE:
+    Type: AWS::Cloud9::EnvironmentEC2
+    Properties: 
+      Name: !Sub '${User}-${Env}-Cloud9-IDE'
+      Description: !Sub '${User} Cloud9 IDE'
+      AutomaticStopTimeMinutes: 600
+      InstanceType: !Sub ${instanceType}
+      #OwnerArn: String
+      SubnetId: !Sub "${stackName}-net-pub-subnet-a"
+
+Outputs:
+
+  Cloud9URL:
+    Description: Cloud9 Environment
+    Value:
+      Fn::Join:
+      - ''
+      - - !Sub https://${AWS::Region}.console.aws.amazon.com/cloud9/ide/
+        - !Ref 'C9IDE'
